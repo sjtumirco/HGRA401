@@ -184,8 +184,8 @@
     <Text Include="config_ori.txt" />
     <Text Include="config_ori_s.txt" />
     <Text Include="config_static.txt" />
-    <Text Include="debug.log" />
-    <Text Include="debug2.log" />
+    <Text Include="DEBUG.txt" />
+    <Text Include="DEBUG2.txt" />
     <Text Include="memoryInFile.txt" />
     <Text Include="memoryOutFile.txt" />
     <Text Include="notification.txt" />

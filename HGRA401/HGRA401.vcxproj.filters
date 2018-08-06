@@ -214,12 +214,6 @@
     <Text Include="config_static.txt">
       <Filter>资源文件</Filter>
     </Text>
-    <Text Include="debug.log">
-      <Filter>资源文件</Filter>
-    </Text>
-    <Text Include="debug2.log">
-      <Filter>资源文件</Filter>
-    </Text>
     <Text Include="memoryInFile.txt">
       <Filter>资源文件</Filter>
     </Text>
@@ -233,6 +227,12 @@
       <Filter>资源文件</Filter>
     </Text>
     <Text Include="parameter_file_s.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="DEBUG.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="DEBUG2.txt">
       <Filter>资源文件</Filter>
     </Text>
   </ItemGroup>

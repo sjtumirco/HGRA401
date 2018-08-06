@@ -51,8 +51,8 @@ vector<vector<int>> vec_config_parsed_tmp;
 vector<vector<int>> pe_port_fanout;//pe_port_fanout[i],first element is index of PE,the next element are fanout of each port of every PE
 bool begin_signal = 1;
 
-ofstream outfile("DEBUG.log");
-ofstream outfile2("DEBUG2.log");
+ofstream outfile("DEBUG.txt");
+ofstream outfile2("DEBUG2.txt");
 //no push
 
 void power_callback(double a, double b, double c, double d) {}
