@@ -170,7 +170,7 @@ int main(int argc,char* argv[])
 	//find fanout for each PE port
 	pe_port_fanout_collect();
 	
-	//µ¼ÈëÅäÖÃ
+	//
 	int idx_config;
 	for (unsigned int i = 0; i < vec_config_parsed_tmp.size(); i++)
 	{
@@ -377,13 +377,7 @@ int main(int argc,char* argv[])
 				outfile2 << setw(15) << ta[vec_config_parsed_tmp[i][1]]->out_tag << setw(15) << ta[vec_config_parsed_tmp[i][1]]->out_v 
 					<< setw(15) << ta[vec_config_parsed_tmp[i][1]]->out << endl;
 			}		
-			//tag issue·ÂÕæ
-			/*outfile << "                " << endl;
-			outfile << "ÕýÔÚ´¦ÀíµÄÊÇtag issue½Úµã......" << endl;
-			TiSimProcess();
-			outfile << "Ti½ÚµãµÄÊä³ö..." << endl;
-			outfile << setw(10) << "out_v" << setw(10) << "out" << endl;
-			outfile << setw(10) << tagissue->out_v << setw(10) << tagissue->out << endl;*/
+			
 		}
 		//memmory update
 		lsunit->update();
@@ -427,7 +421,6 @@ int main(int argc,char* argv[])
 	//		}
 	//	}		
 	//}
-	//outfile << "Õû¸ö·ÂÕæ¹ý³ÌÐèÒªµÄÁ¿»¯Ê±ÖÓÊÇ£º " << cycle_max << endl;
 	ofstream ofile("memoryOutFile.txt");
 	memory2.writeToFile(ofile);
 

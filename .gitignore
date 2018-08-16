@@ -259,3 +259,12 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+
+################################################################
+HGRA401/config_ori_s.txt
+HGRA401/DEBUG.txt
+HGRA401/DEBUG2.txt
+HGRA401/parameter_file_s.txt
+
+
+################################################################
