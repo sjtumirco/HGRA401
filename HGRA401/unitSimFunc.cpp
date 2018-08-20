@@ -2201,13 +2201,16 @@ void LeSimProcess(Load* le_current,LSUnit* lsunit)
 	}
 }
 
-void SeSimProcess(::Store* se_current, LSUnit* lsunit)
+void SeSimProcess(Store* se_current, LSUnit* lsunit)
 {
 	int se_index_current = se_current->config_reg.front()[1];
 	int addr_in_from = se_current->config_reg.front()[2];//index
 	int addr_in_port = se_current->config_reg.front()[3];//index
-	int data_in_from = se_current->config_reg.front()[4];
-	int data_in_port = se_current->config_reg.front()[5];
+	int addr_in_flag = se_current->config_reg.front()[4];
+
+	int data_in_from = se_current->config_reg.front()[5];
+	int data_in_port = se_current->config_reg.front()[6];
+	int data_in_flag = se_current->config_reg.front()[7];
 	//se extra out for end node 
 	se_current->se_extra_out_for_end = 0;
 	se_current->se_extra_out_for_end_v = 0;
@@ -2215,51 +2218,77 @@ void SeSimProcess(::Store* se_current, LSUnit* lsunit)
 	if (tag_mode)//进行tag处理
 	{
 		//addr fetch
-		if (addr_in_port == 0)//port1
+		if (addr_in_flag == 0)//from pe
 		{
-			if (pe[addr_in_from]->dout1_v)
+			if (addr_in_port == 0)//port1
 			{
-				se[se_index_current]->addr = pe[addr_in_from]->dout1;
-				se[se_index_current]->addr_v = pe[addr_in_from]->dout1_v;
-				se[se_index_current]->addr_tag = pe[addr_in_from]->dout1_tag;
-				//pe[addr_in_from]->outTableBuffer1.buffer_clear();
+				if (pe[addr_in_from]->dout1_v)
+				{
+					se[se_index_current]->addr = pe[addr_in_from]->dout1;
+					se[se_index_current]->addr_v = pe[addr_in_from]->dout1_v;
+					se[se_index_current]->addr_tag = pe[addr_in_from]->dout1_tag;
+					//pe[addr_in_from]->outTableBuffer1.buffer_clear();
+				}
+			}
+			else if (addr_in_port == 1)//port2
+			{
+				if (pe[addr_in_from]->dout2_v)
+				{
+					se[se_index_current]->addr = pe[addr_in_from]->dout2;
+					se[se_index_current]->addr_v = pe[addr_in_from]->dout2_v;
+					se[se_index_current]->addr_tag = pe[addr_in_from]->dout2_tag;
+					//pe[addr_in_from]->outTableBuffer2.buffer_clear();
+				}
 			}
 		}
-		else if (addr_in_port == 1)//port2
+		else if (addr_in_flag == 1)//from le
 		{
-			if (pe[addr_in_from]->dout2_v)
+			if (le[addr_in_from]->data_out_v)
 			{
-				se[se_index_current]->addr = pe[addr_in_from]->dout2;
-				se[se_index_current]->addr_v = pe[addr_in_from]->dout2_v;
-				se[se_index_current]->addr_tag = pe[addr_in_from]->dout2_tag;
-				//pe[addr_in_from]->outTableBuffer2.buffer_clear();
+				se[se_index_current]->addr = le[addr_in_from]->data_out;
+				se[se_index_current]->addr_v = le[addr_in_from]->data_out_v;
+				se[se_index_current]->addr_tag = le[addr_in_from]->data_out_tag;
 			}
 		}
+		
 		//data fetch
-		if (data_in_port == 0)//port1
+		if (data_in_flag == 0)//from pe
 		{
-			if (pe[data_in_from]->dout1_v)
+			if (data_in_port == 0)//port1
 			{
-				se[se_index_current]->data_in = pe[data_in_from]->dout1;
-				se[se_index_current]->data_in_v = pe[data_in_from]->dout1_v;
-				se[se_index_current]->data_in_tag = pe[data_in_from]->dout1_tag;
-				//pe[data_in_from]->outTableBuffer1.buffer_clear();
+				if (pe[data_in_from]->dout1_v)
+				{
+					se[se_index_current]->data_in = pe[data_in_from]->dout1;
+					se[se_index_current]->data_in_v = pe[data_in_from]->dout1_v;
+					se[se_index_current]->data_in_tag = pe[data_in_from]->dout1_tag;
+					//pe[data_in_from]->outTableBuffer1.buffer_clear();
+				}
+				else
+					cout << "SE需要的数据还没有准备好。" << endl;
 			}
-			else
-				cout << "SE需要的数据还没有准备好。" << endl;
+			else if (data_in_port == 1)//port2
+			{
+				if (pe[data_in_from]->dout2_v)
+				{
+					se[se_index_current]->data_in = pe[data_in_from]->dout2;
+					se[se_index_current]->data_in_v = pe[data_in_from]->dout2_v;
+					se[se_index_current]->data_in_tag = pe[data_in_from]->dout1_tag;
+					//pe[data_in_from]->outTableBuffer2.buffer_clear();
+				}
+				else
+					cout << "SE需要的数据还没有准备好。" << endl;
+			}
 		}
-		else if (data_in_port == 1)//port2
+		else if (data_in_flag == 1)//from le
 		{
-			if (pe[data_in_from]->dout2_v)
+			if (le[data_in_from]->data_out_v)
 			{
-				se[se_index_current]->data_in = pe[data_in_from]->dout2;
-				se[se_index_current]->data_in_v = pe[data_in_from]->dout2_v;
-				se[se_index_current]->data_in_tag = pe[data_in_from]->dout1_tag;
-				//pe[data_in_from]->outTableBuffer2.buffer_clear();
+				se[se_index_current]->addr = le[data_in_from]->data_out;
+				se[se_index_current]->addr_v = le[data_in_from]->data_out_v;
+				se[se_index_current]->addr_tag = le[data_in_from]->data_out_tag;
 			}
-			else
-				cout << "SE需要的数据还没有准备好。" << endl;
 		}
+		
 		outfile << "SE[" << se_current->config_reg.front()[1] << "]的输入是：addr: " << se_current->addr << " addr_v: " << se_current->addr_v << " addr_tag: " << se_current->addr_tag << endl;
 		outfile << "                                        " << "data_in: " << se_current->data_in << " data_in_v: " << se_current->data_in_v << " data_in_tag: " << se_current->data_in_tag << endl;
 		
@@ -2365,59 +2394,83 @@ void SeSimProcess(::Store* se_current, LSUnit* lsunit)
 	{
 		//不进行tag处理
 		//addr fetch,default config is PE
-		if (addr_in_port == 0)//port1
+		if (addr_in_flag == 0)//from pe
 		{
-			if (pe[addr_in_from]->dout1_v)
+			if (addr_in_port == 0)//port1
 			{
-			
-				se[se_index_current]->addr = pe[addr_in_from]->dout1;
-				se[se_index_current]->addr_v = pe[addr_in_from]->dout1_v;
+				if (pe[addr_in_from]->dout1_v)
+				{
 
+					se[se_index_current]->addr = pe[addr_in_from]->dout1;
+					se[se_index_current]->addr_v = pe[addr_in_from]->dout1_v;
+
+				}
+				else
+				{
+					cout << "SE需要的地址还没有准备好。" << endl;
+				}
+			}
+			else if (addr_in_port == 1)//port2
+			{
+				if (pe[addr_in_from]->dout2_v)
+				{
+					se[se_index_current]->addr = pe[addr_in_from]->dout2;
+					se[se_index_current]->addr_v = pe[addr_in_from]->dout2_v;
+				}
+				else
+				{
+					cout << "SE需要的地址还没有准备好。" << endl;
+				}
 			}
 			else
 			{
-				cout << "SE需要的地址还没有准备好。" << endl;
 			}
 		}
-		else if (addr_in_port == 1)//port2
+		else if (addr_in_flag == 1)//from le
 		{
-			if (pe[addr_in_from]->dout2_v)
+			if (le[addr_in_from]->data_out_v)
 			{
-				se[se_index_current]->addr = pe[addr_in_from]->dout2;
-				se[se_index_current]->addr_v = pe[addr_in_from]->dout2_v;
-			}
-			else
-			{
-				cout << "SE需要的地址还没有准备好。" << endl;
+				se[se_index_current]->addr = le[addr_in_from]->data_out;
+				se[se_index_current]->addr_v = le[addr_in_from]->data_out_v;
 			}
 		}
-		else
-		{
-		}
+		
 
 		//data fetch
-		if (data_in_port == 0)//port1
+		if (data_in_flag == 0)//from pe
 		{
-			if (pe[data_in_from]->dout1_v)
+			if (data_in_port == 0)//port1
 			{
-				se[se_index_current]->data_in = pe[data_in_from]->dout1;
-				se[se_index_current]->data_in_v = pe[data_in_from]->dout1_v;
+				if (pe[data_in_from]->dout1_v)
+				{
+					se[se_index_current]->data_in = pe[data_in_from]->dout1;
+					se[se_index_current]->data_in_v = pe[data_in_from]->dout1_v;
+				}
+				else
+					cout << "SE需要的数据还没有准备好。" << endl;
+			}
+			else if (data_in_port == 1)//port2
+			{
+				if (pe[data_in_from]->dout2_v)
+				{
+					se[se_index_current]->data_in = pe[data_in_from]->dout2;
+					se[se_index_current]->data_in_v = pe[data_in_from]->dout2_v;
+				}
+				else
+					cout << "SE需要的数据还没有准备好。" << endl;
 			}
 			else
-				cout << "SE需要的数据还没有准备好。" << endl;
+				cout << "se data_in_from_port is out of range." << endl;
 		}
-		else if (data_in_port == 1)//port2
+		else if (data_in_flag == 1)//from le
 		{
-			if (pe[data_in_from]->dout2_v)
+			if (le[data_in_from]->data_out_v)
 			{
-				se[se_index_current]->data_in = pe[data_in_from]->dout2;
-				se[se_index_current]->data_in_v = pe[data_in_from]->dout2_v;
+				se[se_index_current]->data_in = le[data_in_from]->data_out;
+				se[se_index_current]->data_in_v = le[data_in_from]->data_out_v;
 			}
-			else
-				cout << "SE需要的数据还没有准备好。" << endl;
 		}
-		else
-			cout << "se data_in_from_port is out of range." << endl;
+		
 
 		//for debug
 		outfile2 << endl;
