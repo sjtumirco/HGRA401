@@ -235,11 +235,5 @@
     <Text Include="DEBUG2.txt">
       <Filter>资源文件</Filter>
     </Text>
-    <Text Include="参数文件示例3x3矩阵.txtx">
-      <Filter>资源文件</Filter>
-    </Text>
-    <Text Include="配置文件示例3x3矩阵.txtx">
-      <Filter>资源文件</Filter>
-    </Text>
   </ItemGroup>
 </Project>
