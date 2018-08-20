@@ -27,11 +27,11 @@
 #define unitTotalNums (peNums+leNums+seNums+fgNums+taNums)		//总的单元个数
 
 #define joininportNums 2			//第三类细粒度模块（join节点）的输入端口数量
-#define memoryDepth 500			//保存输入数据memory的大小
-#define memory2depth 500			//保存输出数据memory的大小
+#define memoryDepth 50			//保存输入数据memory的大小
+#define memory2depth 50			//保存输出数据memory的大小
 
 //with memory or not
 #define ATTACH_MEMORY 0			//仿真器加上或者不加上memory
 
-//累加寄存器的边界值，下一次循环开始需要写入初始值的边界，超过这个值就要写入初值
+//累加寄存器的边界值，下一次循环开始需要写入的初始值
 #define THRESHOLD 3
