@@ -24,7 +24,7 @@ void ConfigParse::configFile2vec(ifstream& config_ori)
 		vec_line.push_back(str_line);
 		vec_config_ori[i] = vec_line;		//vec_config_ori里面存储的是原始字符
 		vec_line.clear();
-		i++;
+		i++;     //kk
 	}
 
 }
